@@ -80,6 +80,13 @@ const webpageSchema = {
 const schemaData = [defaultSchema, organizationSchema, webpageSchema, ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])]
 ---
 
+<!-- Favicons -->
+<link rel='icon' type='image/x-icon' href='/favicon/favicon.ico' />
+<link rel='icon' type='image/png' sizes='16x16' href='/favicon/favicon-16x16.png' />
+<link rel='icon' type='image/png' sizes='32x32' href='/favicon/favicon-32x32.png' />
+<link rel='apple-touch-icon' sizes='180x180' href='/favicon/apple-touch-icon.png' />
+<link rel='manifest' href='/site.webmanifest' />
+
 <!-- Essential Meta Tags -->
 <meta charset='utf-8' />
 <meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover' />
@@ -127,12 +134,6 @@ const schemaData = [defaultSchema, organizationSchema, webpageSchema, ...(schema
 <meta property='og:locale' content={SITE_METADATA.locale} />
 <meta http-equiv='content-language' content={SITE_METADATA.language} />
 
-<!-- Favicon and Icons -->
-{SITE_METADATA.icons.icon.map(icon => <link rel='icon' type={icon.type} sizes={icon.sizes} href={icon.url} />)}
-{SITE_METADATA.icons.apple.map(icon => <link rel='apple-touch-icon' sizes={icon.sizes} href={icon.url} />)}
-{SITE_METADATA.icons.shortcut.map(icon => <link rel='shortcut icon' href={icon.url} />)}
-<link rel='manifest' href='/site.webmanifest' />
-
 <!-- Sitemap -->
 <link rel='sitemap' href='/sitemap.xml' />
 
@@ -174,8 +175,6 @@ const schemaData = [defaultSchema, organizationSchema, webpageSchema, ...(schema
 
 <!-- Performance and Resource Hints -->
 <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
-<link rel='preconnect' href='https://fonts.googleapis.com' />
-<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin='anonymous' />
 <!-- Google Fonts - Optimized Loading -->
 <link
   rel='preload'
