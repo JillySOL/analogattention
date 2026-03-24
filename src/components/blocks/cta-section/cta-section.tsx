@@ -9,7 +9,7 @@ const CTA = () => {
       <div className='mx-auto max-w-4xl px-4 sm:px-6 lg:px-8'>
         <div className='max-w-xl'>
           <h2 className='font-serif text-3xl font-light leading-tight tracking-tight sm:text-4xl'>
-            Get new essays delivered to your inbox.
+            Get new journals delivered to your inbox.
           </h2>
           <p className='mt-4 text-muted-foreground'>
             Join readers who think carefully about technology and attention. No spam, unsubscribe any time.

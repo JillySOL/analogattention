@@ -1,19 +1,19 @@
 // Site Configuration
 // Centralized configuration for site metadata, SEO, and branding
 
-export const SITE_TITLE = 'analogattention — Essays on Digital Minimalism'
+export const SITE_TITLE = 'analogattention — Journals on Digital Minimalism'
 export const SITE_DESCRIPTION =
-  'analogattention is a digital garden for thinking clearly. Essays and resources on digital minimalism, intentional technology use, and reclaiming attention.'
+  'analogattention is a digital garden for thinking clearly. Journals and resources on digital minimalism, intentional technology use, and reclaiming attention.'
 
 export const GITHUB_URL = 'https://github.com/yourusername/analogattention'
 export const SITE_URL = 'https://analogattention.com/'
 
 export const SITE_METADATA = {
   title: {
-    default: 'analogattention — Essays on Digital Minimalism'
+    default: 'analogattention — Journals on Digital Minimalism'
   },
   description:
-    'analogattention is a digital garden for thinking clearly. Essays and resources on digital minimalism, intentional technology use, and reclaiming attention.',
+    'analogattention is a digital garden for thinking clearly. Journals and resources on digital minimalism, intentional technology use, and reclaiming attention.',
   keywords: [
     'digital minimalism',
     'intentional technology',
@@ -52,15 +52,15 @@ export const SITE_METADATA = {
     type: 'website',
     locale: 'en_US',
     siteName: 'analogattention',
-    title: 'analogattention — Essays on Digital Minimalism',
+    title: 'analogattention — Journals on Digital Minimalism',
     description:
-      'analogattention is a digital garden for thinking clearly. Essays and resources on digital minimalism, intentional technology use, and reclaiming attention.',
+      'analogattention is a digital garden for thinking clearly. Journals and resources on digital minimalism, intentional technology use, and reclaiming attention.',
     images: [
       {
         url: '/images/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'analogattention — Essays on Digital Minimalism',
+        alt: 'analogattention — Journals on Digital Minimalism',
         type: 'image/png'
       }
     ]
@@ -69,9 +69,9 @@ export const SITE_METADATA = {
     card: 'summary_large_image',
     site: '@analogattention',
     creator: '@analogattention',
-    title: 'analogattention — Essays on Digital Minimalism',
+    title: 'analogattention — Journals on Digital Minimalism',
     description:
-      'analogattention is a digital garden for thinking clearly. Essays and resources on digital minimalism, intentional technology use, and reclaiming attention.',
+      'analogattention is a digital garden for thinking clearly. Journals and resources on digital minimalism, intentional technology use, and reclaiming attention.',
     images: ['/images/og-image.png']
   },
   verification: {

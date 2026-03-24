@@ -14,6 +14,9 @@ const blog = defineCollection({
     author: z.string().default('analogattention'),
     avatarUrl: z.string().optional(),
     category: z.string().default('General'),
+    collection: z
+      .enum(['Getting Started', 'Common Challenges', 'Philosophical', 'Talking Points'])
+      .default('Philosophical'),
     readTime: z.number().optional(),
     featured: z.boolean().default(false),
     tags: z.array(z.string()).default([])

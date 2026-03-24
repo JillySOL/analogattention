@@ -1,0 +1,27 @@
+---
+import Layout from '@/layouts/Layout.astro'
+
+const pageTitle = 'About the author — analogattention'
+const pageDescription =
+  'About the author behind analogattention, an independent journal on digital minimalism and intentional technology.'
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <section class='py-20 sm:py-24 lg:py-28'>
+    <div class='mx-auto max-w-4xl px-4 sm:px-6 lg:px-8'>
+      <h1 class='font-serif text-4xl font-light leading-[1.06] tracking-tight sm:text-5xl lg:text-6xl'>
+        About the author
+      </h1>
+      <div class='mt-8 max-w-2xl space-y-5'>
+        <p class='text-lg leading-relaxed text-muted-foreground'>
+          analogattention is an independent publication exploring the relationship between attention, technology, and
+          intentional living. Clarity of mind comes from deliberate choices about where we direct our focus.
+        </p>
+        <p class='leading-relaxed text-muted-foreground'>
+          The journal covers digital minimalism, deep work, analog practices, and the philosophy of living well in a
+          hyperconnected world. Independent, ad-free, and written to last.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -5,42 +5,44 @@ import { calculateReadTime } from '@/utils/blog'
 
 const allPosts = await getCollection('blog')
 const sortedPosts = [...allPosts].sort((a, b) => b.data.id - a.data.id)
-
-// Unique categories for filter pills
-const allCategories = [...new Set(sortedPosts.map(p => p.data.category))]
+const collectionTypes = ['Getting Started', 'Common Challenges', 'Philosophical', 'Talking Points']
 
 const pageTitle = 'Journal — analogattention'
 const pageDescription =
-  'All essays on digital minimalism, intentional technology use, and reclaiming attention in a hyperconnected world.'
+  'All journals on digital minimalism, intentional technology use, and reclaiming attention in a hyperconnected world.'
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
   {/* Page Header */}
   <section class='py-20 sm:py-24 lg:py-28'>
     <div class='mx-auto max-w-4xl px-4 sm:px-6 lg:px-8'>
-      <h1 class='font-serif text-4xl font-light leading-[1.06] tracking-tight sm:text-5xl lg:text-6xl'>Archive</h1>
+      <h1 class='font-serif text-4xl font-light leading-[1.06] tracking-tight sm:text-5xl lg:text-6xl'>Journals</h1>
       <p class='mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground'>
-        All essays, sorted by newest first. On attention, technology, and the art of living deliberately.
+        Filter by collection and switch chronological order. On attention, technology, and the art of living
+        deliberately.
       </p>
 
-      {/* Category filter pills */}
-      <div class='mt-8 flex flex-wrap gap-2' id='filter-row'>
-        <button
-          class='filter-pill rounded-full border border-border bg-foreground px-3.5 py-1.5 text-xs font-semibold text-background transition-colors'
-          data-category='all'
-        >
-          All
-        </button>
-        {
-          allCategories.map(cat => (
-            <button
-              class='filter-pill rounded-full border border-border px-3.5 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-foreground hover:text-foreground'
-              data-category={cat}
-            >
-              {cat}
-            </button>
-          ))
-        }
+      <div class='mt-8 grid gap-4 sm:grid-cols-[minmax(0,320px)_auto] sm:items-end'>
+        <label class='flex flex-col gap-2'>
+          <span class='text-xs font-semibold uppercase tracking-widest text-muted-foreground'>Collection</span>
+          <select
+            id='collection-filter'
+            class='h-11 rounded-xl border border-border bg-background px-3 text-sm text-foreground outline-none transition-colors focus:border-foreground'
+          >
+            <option value='all'>All collections</option>
+            {collectionTypes.map(type => <option value={type}>{type}</option>)}
+          </select>
+        </label>
+
+        <label class='inline-flex items-center gap-3 sm:justify-self-end'>
+          <span class='text-xs font-semibold uppercase tracking-widest text-muted-foreground'>Chronological</span>
+          <input
+            id='chronological-order'
+            type='checkbox'
+            class='h-5 w-9 cursor-pointer appearance-none rounded-full border border-border bg-muted transition-colors checked:bg-foreground'
+          />
+          <span class='text-sm text-muted-foreground'>Oldest first</span>
+        </label>
       </div>
     </div>
   </section>
@@ -56,10 +58,11 @@ const pageDescription =
               <a
                 href={`/blog/${post.id}`}
                 class='post-item group flex flex-col gap-2 py-6 sm:flex-row sm:items-baseline sm:gap-10'
-                data-category={post.data.category}
+                data-collection={post.data.collection}
+                data-sort-id={post.data.id}
               >
                 <span class='w-32 shrink-0 text-[0.68rem] font-semibold uppercase tracking-widest text-muted-foreground'>
-                  {post.data.category}
+                  {post.data.collection}
                 </span>
                 <div class='flex-1 space-y-1.5'>
                   <p class='font-semibold leading-snug tracking-tight group-hover:underline group-hover:underline-offset-2'>
@@ -84,29 +87,63 @@ const pageDescription =
 </Layout>
 
 <script>
-  const pills = document.querySelectorAll<HTMLButtonElement>('.filter-pill')
-  const items = document.querySelectorAll<HTMLElement>('.post-item')
+  const filterSelect = document.querySelector<HTMLSelectElement>('#collection-filter')
+  const chronologicalSwitch = document.querySelector<HTMLInputElement>('#chronological-order')
+  const postList = document.querySelector<HTMLElement>('#post-list')
+  const postItems = Array.from(document.querySelectorAll<HTMLElement>('.post-item'))
 
-  pills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      const cat = pill.dataset.category ?? 'all'
+  const applyFilters = () => {
+    if (!filterSelect || !chronologicalSwitch || !postList) return
 
-      // Update active pill styles
-      pills.forEach(p => {
-        p.classList.remove('bg-foreground', 'text-background', 'border-foreground')
-        p.classList.add('text-muted-foreground')
+    const selectedCollection = filterSelect.value || 'all'
+    const oldestFirst = chronologicalSwitch.checked
+
+    const visibleItems = postItems
+      .filter(item => selectedCollection === 'all' || item.dataset.collection === selectedCollection)
+      .sort((a, b) => {
+        const idA = Number(a.dataset.sortId || '0')
+        const idB = Number(b.dataset.sortId || '0')
+        return oldestFirst ? idA - idB : idB - idA
       })
-      pill.classList.add('bg-foreground', 'text-background', 'border-foreground')
-      pill.classList.remove('text-muted-foreground')
 
-      // Show/hide posts
-      items.forEach(item => {
-        if (cat === 'all' || item.dataset.category === cat) {
-          item.style.display = ''
-        } else {
-          item.style.display = 'none'
-        }
-      })
+    postItems.forEach(item => {
+      item.style.display = 'none'
     })
-  })
+
+    visibleItems.forEach(item => {
+      item.style.display = ''
+      postList.appendChild(item)
+    })
+
+    const params = new URLSearchParams(window.location.search)
+    if (selectedCollection !== 'all') {
+      params.set('collection', selectedCollection)
+    } else {
+      params.delete('collection')
+    }
+
+    params.set('order', oldestFirst ? 'asc' : 'desc')
+    const nextQuery = params.toString()
+    const nextUrl = nextQuery ? `${window.location.pathname}?${nextQuery}` : window.location.pathname
+    window.history.replaceState({}, '', nextUrl)
+  }
+
+  const hydrateFromUrl = () => {
+    if (!filterSelect || !chronologicalSwitch) return
+    const params = new URLSearchParams(window.location.search)
+    const requestedCollection = params.get('collection')
+    const requestedOrder = params.get('order')
+
+    if (requestedCollection && Array.from(filterSelect.options).some(option => option.value === requestedCollection)) {
+      filterSelect.value = requestedCollection
+    }
+
+    chronologicalSwitch.checked = requestedOrder === 'asc'
+  }
+
+  hydrateFromUrl()
+  applyFilters()
+
+  filterSelect?.addEventListener('change', applyFilters)
+  chronologicalSwitch?.addEventListener('change', applyFilters)
 </script>
