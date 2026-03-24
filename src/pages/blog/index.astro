@@ -34,15 +34,18 @@ const pageDescription =
           </select>
         </label>
 
-        <label class='inline-flex items-center gap-3 sm:justify-self-end'>
+        <div class='inline-flex items-center gap-3 sm:justify-self-end'>
           <span class='text-xs font-semibold uppercase tracking-widest text-muted-foreground'>Chronological</span>
-          <input
-            id='chronological-order'
-            type='checkbox'
-            class='h-5 w-9 cursor-pointer appearance-none rounded-full border border-border bg-muted transition-colors checked:bg-foreground'
-          />
-          <span class='text-sm text-muted-foreground'>Oldest first</span>
-        </label>
+          <button
+            id='order-toggle'
+            type='button'
+            class='inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-xl leading-none transition-colors hover:border-foreground hover:text-foreground'
+            aria-label='Toggle chronological order'
+            title='Newest first'
+          >
+            <span id='order-icon' aria-hidden='true'>↓</span>
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -88,15 +91,22 @@ const pageDescription =
 
 <script>
   const filterSelect = document.querySelector<HTMLSelectElement>('#collection-filter')
-  const chronologicalSwitch = document.querySelector<HTMLInputElement>('#chronological-order')
+  const orderToggle = document.querySelector<HTMLButtonElement>('#order-toggle')
+  const orderIcon = document.querySelector<HTMLSpanElement>('#order-icon')
   const postList = document.querySelector<HTMLElement>('#post-list')
   const postItems = Array.from(document.querySelectorAll<HTMLElement>('.post-item'))
+  let oldestFirst = false
+
+  const renderOrderState = () => {
+    if (!orderToggle || !orderIcon) return
+    orderIcon.textContent = oldestFirst ? '↑' : '↓'
+    orderToggle.title = oldestFirst ? 'Oldest first' : 'Newest first'
+  }
 
   const applyFilters = () => {
-    if (!filterSelect || !chronologicalSwitch || !postList) return
+    if (!filterSelect || !postList) return
 
     const selectedCollection = filterSelect.value || 'all'
-    const oldestFirst = chronologicalSwitch.checked
 
     const visibleItems = postItems
       .filter(item => selectedCollection === 'all' || item.dataset.collection === selectedCollection)
@@ -129,7 +139,7 @@ const pageDescription =
   }
 
   const hydrateFromUrl = () => {
-    if (!filterSelect || !chronologicalSwitch) return
+    if (!filterSelect) return
     const params = new URLSearchParams(window.location.search)
     const requestedCollection = params.get('collection')
     const requestedOrder = params.get('order')
@@ -138,12 +148,17 @@ const pageDescription =
       filterSelect.value = requestedCollection
     }
 
-    chronologicalSwitch.checked = requestedOrder === 'asc'
+    oldestFirst = requestedOrder === 'asc'
+    renderOrderState()
   }
 
   hydrateFromUrl()
   applyFilters()
 
   filterSelect?.addEventListener('change', applyFilters)
-  chronologicalSwitch?.addEventListener('change', applyFilters)
+  orderToggle?.addEventListener('click', () => {
+    oldestFirst = !oldestFirst
+    renderOrderState()
+    applyFilters()
+  })
 </script>
