@@ -16,17 +16,8 @@ const ContactUs = () => {
         <Card className='border-none shadow-none'>
           <CardContent className='grid gap-6 md:grid-cols-4 md:gap-12'>
             {/* Form Section */}
-            <div className='md:col-span-2'>
+            <div className='md:col-span-4'>
               <ContactForm />
-            </div>
-
-            <div className='shadow-none md:col-span-2'>
-              <img
-                src='/images/contact-us.webp'
-                alt='Contact illustration'
-                className='size-full rounded-xl border object-cover max-md:max-h-70'
-                loading='lazy'
-              />
             </div>
           </CardContent>
         </Card>

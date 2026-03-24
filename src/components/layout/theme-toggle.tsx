@@ -31,11 +31,11 @@ function ThemeToggle() {
     <Button
       variant='outline'
       size='icon'
-      className='relative'
+      className='relative no-print'
       onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
     >
-      <MoonStarIcon className='size-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90' />
-      <SunIcon className='absolute size-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0' />
+      <SunIcon className='size-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90' />
+      <MoonStarIcon className='absolute size-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0' />
       <span className='sr-only'>Toggle theme</span>
     </Button>
   )

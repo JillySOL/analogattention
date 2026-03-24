@@ -1,12 +1,12 @@
 'use client'
 
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { MailIcon, MenuIcon } from 'lucide-react'
+import { MenuIcon } from 'lucide-react'
 
 import ThemeToggle from '@/components/layout/theme-toggle'
+import PrintButton from '@/components/layout/print-button'
 
 import { Button } from '@/components/ui/button'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 import MenuDropdown from '@/components/blocks/menu-dropdown'
 import MenuNavigation from '@/components/blocks/menu-navigation'
@@ -14,16 +14,16 @@ import type { NavigationSection } from '@/components/blocks/menu-navigation'
 
 import { cn } from '@/lib/utils'
 
-import LogoSvg from '@/assets/svg/logo'
-
 type HeaderProps = {
   navigationData: NavigationSection[]
+  isHome?: boolean
   className?: string
 }
 
-const Header = ({ navigationData, className }: HeaderProps) => {
+const Header = ({ navigationData, isHome = false, className }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
+  const [isHomeRoute, setIsHomeRoute] = useState(isHome)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -77,26 +77,37 @@ const Header = ({ navigationData, className }: HeaderProps) => {
 
   useLayoutEffect(() => {
     // Update activeSection based on the current route using window.location.pathname
-    const path = window.location.pathname
+    const updateRouteState = () => {
+      const path = window.location.pathname
+      setIsHomeRoute(path === '/')
 
-    setTimeout(() => {
-      if (path === '/' || path === '/#home') {
-        setActiveSection('home')
-      } else if (path.startsWith('/blog/')) {
-        setActiveSection('') // Don't show any active state on blog post pages
-      } else if (path.startsWith('/contact')) {
-        setActiveSection('') // Don't show any active state on contact page
-      } else {
-        setActiveSection('') // Default case for other routes
-      }
-    }, 0)
+      setTimeout(() => {
+        if (path === '/' || path === '/#home') {
+          setActiveSection('home')
+        } else if (path.startsWith('/blog/')) {
+          setActiveSection('')
+        } else if (path.startsWith('/contact')) {
+          setActiveSection('')
+        } else {
+          setActiveSection('')
+        }
+      }, 0)
+    }
+
+    updateRouteState()
+    document.addEventListener('astro:page-load', updateRouteState)
+
+    return () => {
+      document.removeEventListener('astro:page-load', updateRouteState)
+    }
   }, [])
 
   return (
     <header
       className={cn(
-        'bg-background sticky top-0 z-50 h-16 w-full transition-all duration-300',
+        'sticky top-0 z-50 h-16 w-full border-b border-border/70 bg-background/95 backdrop-blur transition-shadow duration-200',
         {
+          'bg-background': !isHomeRoute,
           'shadow-sm': isScrolled
         },
         className
@@ -104,9 +115,8 @@ const Header = ({ navigationData, className }: HeaderProps) => {
     >
       <div className='mx-auto flex h-full max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8'>
         {/* Logo */}
-        <a href='/#home' className='flex items-center gap-3'>
-          <LogoSvg />
-          <span className='text-primary text-[20px] font-semibold'>INK</span>
+        <a href='/' className='flex items-center'>
+          <span className='font-serif italic text-xl font-medium tracking-tight'>analogattention</span>
         </a>
 
         {/* Navigation */}
@@ -114,39 +124,21 @@ const Header = ({ navigationData, className }: HeaderProps) => {
 
         {/* Actions */}
         <div className='flex gap-3'>
+          <PrintButton className='no-print' />
           <ThemeToggle />
-          <Button variant='outline' className='max-sm:hidden' asChild>
-            <a href='/contact-us'>Get in Touch</a>
-          </Button>
 
-          {/* Navigation for small screens */}
-          <div className='flex gap-3'>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant='outline' size='icon' className='sm:hidden' asChild>
-                    <a href='/contact-us'>
-                      <MailIcon />
-                      <span className='sr-only'>Get in Touch</span>
-                    </a>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Get in Touch</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-
-            <MenuDropdown
-              align='end'
-              navigationData={navigationData}
-              activeSection={activeSection}
-              trigger={
-                <Button variant='outline' size='icon' className='lg:hidden'>
-                  <MenuIcon />
-                  <span className='sr-only'>Menu</span>
-                </Button>
-              }
-            />
-          </div>
+          {/* Mobile menu */}
+          <MenuDropdown
+            align='end'
+            navigationData={navigationData}
+            activeSection={activeSection}
+            trigger={
+              <Button variant='outline' size='icon' className='lg:hidden'>
+                <MenuIcon />
+                <span className='sr-only'>Menu</span>
+              </Button>
+            }
+          />
         </div>
       </div>
     </header>

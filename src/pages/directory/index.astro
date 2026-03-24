@@ -1,0 +1,51 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { getCollection } from 'astro:content'
+import DirectoryTabs from '@/components/blocks/directory-tabs/directory-tabs'
+
+const allItems = await getCollection('directory')
+
+// Sort items: featured first within each category
+const sortedItems = [...allItems].sort((a, b) => {
+  if (a.data.featured && !b.data.featured) return -1
+  if (!a.data.featured && b.data.featured) return 1
+  return a.data.title.localeCompare(b.data.title)
+})
+
+const categories = [...new Set(sortedItems.map(i => i.data.category))].sort()
+
+// Serialize for the React island
+const items = sortedItems.map(item => ({
+  id: item.id,
+  title: item.data.title,
+  description: item.data.description,
+  category: item.data.category,
+  url: item.data.url || undefined,
+  tags: item.data.tags,
+  featured: item.data.featured
+}))
+
+const pageTitle = 'Resources — analogattention'
+const pageDescription =
+  'A curated directory of books, tools, practices, and media that support a slower, more intentional life.'
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  {/* Page Header */}
+  <section class='py-20 sm:py-24 lg:py-28'>
+    <div class='mx-auto max-w-4xl px-4 sm:px-6 lg:px-8'>
+      <h1 class='font-serif text-4xl font-light leading-[1.06] tracking-tight sm:text-5xl lg:text-6xl'>Resources</h1>
+      <p class='mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground'>
+        A curated selection of books, tools, films, and practices that support intentional living. Each entry is
+        hand-picked for its usefulness and depth.
+      </p>
+    </div>
+  </section>
+
+  {/* Tabbed directory */}
+  <section class='pb-24'>
+    <div class='mx-auto max-w-4xl px-4 sm:px-6 lg:px-8'>
+      <DirectoryTabs items={items} categories={categories} client:load />
+    </div>
+  </section>
+</Layout>

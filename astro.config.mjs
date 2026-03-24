@@ -6,7 +6,7 @@ import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 
 export default defineConfig({
-  site: 'http://localhost:4321/',
+  site: 'https://analogattention.com/',
   integrations: [
     react(),
     mdx(),
@@ -15,7 +15,7 @@ export default defineConfig({
       customPages: [],
       serialize(item) {
         // Homepage - highest priority
-        if (item.url === 'http://localhost:4321/') {
+        if (item.url === 'https://analogattention.com/') {
           // @ts-expect-error - Valid sitemap changefreq value
           item.changefreq = 'daily'
           item.priority = 1.0
