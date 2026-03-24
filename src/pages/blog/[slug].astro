@@ -71,9 +71,9 @@ const schema = {
 >
   <main>
     <section class='py-12 sm:py-20'>
-      <div class='mx-auto max-w-3xl px-4 sm:px-6 lg:px-8'>
+      <div class='mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 print-scope'>
         {/* Breadcrumb */}
-        <Breadcrumb className='mb-8'>
+        <Breadcrumb className='mb-8 no-print'>
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink href='/'>Home</BreadcrumbLink>
@@ -89,40 +89,52 @@ const schema = {
           </BreadcrumbList>
         </Breadcrumb>
 
-        {/* Post header */}
-        <div class='space-y-4'>
-          <p class='text-[0.68rem] font-semibold uppercase tracking-widest text-muted-foreground'>
-            {entry.data.category} &middot; {entry.data.pubDate} &middot; {readTime} min read
-          </p>
-          <h1 class='font-serif text-4xl font-light leading-[1.06] tracking-tight sm:text-5xl'>
-            {entry.data.title}
-          </h1>
-          <p class='text-xl leading-relaxed text-muted-foreground'>{entry.data.description}</p>
+        <div class='mb-6 flex items-center justify-end no-print'>
+          <button
+            type='button'
+            onclick='window.print()'
+            class='rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted'
+          >
+            Print Essay
+          </button>
         </div>
 
-        <Separator className='my-8' />
+        <div class='print-essay'>
+          {/* Post header */}
+          <div class='space-y-4'>
+            <p class='text-[0.68rem] font-semibold uppercase tracking-widest text-muted-foreground'>
+              {entry.data.category} &middot; {entry.data.pubDate} &middot; {readTime} min read
+            </p>
+            <h1 class='font-serif text-4xl font-light leading-[1.06] tracking-tight sm:text-5xl'>
+              {entry.data.title}
+            </h1>
+            <p class='text-xl leading-relaxed text-muted-foreground'>{entry.data.description}</p>
+          </div>
 
-        {/* Hero image */}
-        {
-          entry.data.imageUrl && (
-            <div class='mb-10'>
-              <img
-                src={entry.data.imageUrl}
-                alt={entry.data.title}
-                class='w-full rounded-lg object-cover'
-                loading='lazy'
-              />
-            </div>
-          )
-        }
+          <Separator className='my-8' />
 
-        {/* Article body */}
-        <article class='prose prose-neutral dark:prose-invert max-w-none'>
-          <Content />
-        </article>
+          {/* Hero image */}
+          {
+            entry.data.imageUrl && (
+              <div class='mb-10 no-print'>
+                <img
+                  src={entry.data.imageUrl}
+                  alt={entry.data.title}
+                  class='w-full rounded-lg object-cover'
+                  loading='lazy'
+                />
+              </div>
+            )
+          }
+
+          {/* Article body */}
+          <article class='prose prose-neutral dark:prose-invert max-w-none'>
+            <Content />
+          </article>
+        </div>
 
         {/* Post navigation */}
-        <div class='mt-16 flex w-full justify-between gap-4 border-t pt-8'>
+        <div class='mt-16 flex w-full justify-between gap-4 border-t pt-8 no-print'>
           {
             previousPost ? (
               <a href={`/blog/${previousPost.id}`}>
@@ -157,8 +169,68 @@ const schema = {
       </div>
     </section>
 
-    <Blog relatedPosts={formattedRelatedPosts} />
+    <div class='no-print'>
+      <Blog relatedPosts={formattedRelatedPosts} />
+    </div>
 
-    <CTA />
+    <div class='no-print'>
+      <CTA />
+    </div>
   </main>
 </Layout>
+
+<style is:global>
+  @page {
+    size: A4;
+    margin: 16mm;
+  }
+
+  @media print {
+    html,
+    body {
+      background: #fff !important;
+      color: #000 !important;
+      font-size: 12pt !important;
+      line-height: 1.5 !important;
+    }
+
+    body * {
+      visibility: hidden !important;
+    }
+
+    .print-essay,
+    .print-essay * {
+      visibility: visible !important;
+    }
+
+    .print-scope {
+      max-width: none !important;
+      width: 100% !important;
+      padding: 0 !important;
+    }
+
+    .print-essay {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      color: #000 !important;
+    }
+
+    .print-essay .prose img,
+    .print-essay img {
+      display: none !important;
+    }
+
+    .print-essay a,
+    .print-essay a:visited {
+      color: #000 !important;
+      text-decoration: none !important;
+    }
+
+    .no-print,
+    [data-no-print='true'] {
+      display: none !important;
+    }
+  }
+</style>

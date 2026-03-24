@@ -22,7 +22,7 @@ const pageDescription =
         deliberately.
       </p>
 
-      <div class='mt-8 grid gap-4 sm:grid-cols-[minmax(0,320px)_auto] sm:items-end'>
+      <div class='mt-8 flex flex-wrap items-end gap-4'>
         <label class='flex flex-col gap-2'>
           <span class='text-xs font-semibold uppercase tracking-widest text-muted-foreground'>Collection</span>
           <select
@@ -34,18 +34,16 @@ const pageDescription =
           </select>
         </label>
 
-        <div class='inline-flex items-center gap-3 sm:justify-self-end'>
-          <span class='text-xs font-semibold uppercase tracking-widest text-muted-foreground'>Chronological</span>
-          <button
-            id='order-toggle'
-            type='button'
-            class='inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-xl leading-none transition-colors hover:border-foreground hover:text-foreground'
-            aria-label='Toggle chronological order'
-            title='Newest first'
-          >
-            <span id='order-icon' aria-hidden='true'>↓</span>
-          </button>
-        </div>
+        <button
+          id='order-toggle'
+          type='button'
+          class='inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground sm:justify-self-end'
+          aria-label='Toggle chronological order'
+          title='Newest first'
+        >
+          <span id='order-icon' aria-hidden='true'>↓</span>
+          <span id='order-label'>Newest first</span>
+        </button>
       </div>
     </div>
   </section>
@@ -93,14 +91,15 @@ const pageDescription =
   const filterSelect = document.querySelector<HTMLSelectElement>('#collection-filter')
   const orderToggle = document.querySelector<HTMLButtonElement>('#order-toggle')
   const orderIcon = document.querySelector<HTMLSpanElement>('#order-icon')
+  const orderLabel = document.querySelector<HTMLSpanElement>('#order-label')
   const postList = document.querySelector<HTMLElement>('#post-list')
   const postItems = Array.from(document.querySelectorAll<HTMLElement>('.post-item'))
   let oldestFirst = false
 
   const renderOrderState = () => {
-    if (!orderToggle || !orderIcon) return
+    if (!orderIcon) return
     orderIcon.textContent = oldestFirst ? '↑' : '↓'
-    orderToggle.title = oldestFirst ? 'Oldest first' : 'Newest first'
+    if (orderLabel) orderLabel.textContent = oldestFirst ? 'Oldest first' : 'Newest first'
   }
 
   const applyFilters = () => {

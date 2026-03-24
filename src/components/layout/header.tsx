@@ -4,7 +4,6 @@ import { useEffect, useLayoutEffect, useState } from 'react'
 import { MenuIcon } from 'lucide-react'
 
 import ThemeToggle from '@/components/layout/theme-toggle'
-import PrintButton from '@/components/layout/print-button'
 
 import { Button } from '@/components/ui/button'
 
@@ -124,7 +123,6 @@ const Header = ({ navigationData, isHome = false, className }: HeaderProps) => {
 
         {/* Actions */}
         <div className='flex gap-3'>
-          <PrintButton className='no-print' />
           <ThemeToggle />
 
           {/* Mobile menu */}
