@@ -3,7 +3,12 @@
 
 export const SITE_TITLE = 'analogattention — Journals on Digital Minimalism'
 export const SITE_DESCRIPTION =
-  'analogattention is a digital garden for thinking clearly. Journals and resources on digital minimalism, intentional technology use, and reclaiming attention.'
+  'Analog Attention is about reinforcing the importance of your natural curiosity, and using your own spirit of inquiry to shape your day-to-day.'
+
+// The newsletter lives on Substack. Paste the publication's address here (e.g. 'https://analogattention.substack.com')
+// and the subscribe box appears on the home page and under every post; while it is empty the box is hidden,
+// because the site itself has nowhere to keep email addresses.
+export const SUBSTACK_URL = ''
 
 export const GITHUB_URL = 'https://github.com/yourusername/analogattention'
 export const SITE_URL = 'https://analogattention.com/'
