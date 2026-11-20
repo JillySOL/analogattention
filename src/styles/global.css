@@ -27,6 +27,8 @@
   --secondary-foreground: oklch(0.2 0 0);
   --muted: oklch(0.96 0 0);
   --muted-foreground: oklch(0.44 0 0);
+  /* Body copy for long-form reading: softer than ink, much stronger than muted */
+  --reading: oklch(0.25 0 0);
   --accent: oklch(0.94 0 0);
   --accent-foreground: oklch(0.06 0 0);
   --destructive: oklch(0.58 0.22 27.29);
@@ -67,18 +69,19 @@
 
 .dark {
   /* True near-black editorial dark mode */
-  --background: oklch(0.09 0 0);
+  --background: oklch(0.13 0 0);
   --foreground: oklch(0.95 0 0);
-  --card: oklch(0.13 0 0);
+  --card: oklch(0.17 0 0);
   --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.13 0 0);
+  --popover: oklch(0.17 0 0);
   --popover-foreground: oklch(0.95 0 0);
   --primary: oklch(0.95 0 0);
   --primary-foreground: oklch(0.09 0 0);
   --secondary: oklch(0.18 0 0);
   --secondary-foreground: oklch(0.85 0 0);
   --muted: oklch(0.16 0 0);
-  --muted-foreground: oklch(0.57 0 0);
+  --muted-foreground: oklch(0.7 0 0);
+  --reading: oklch(0.88 0 0);
   --accent: oklch(0.18 0 0);
   --accent-foreground: oklch(0.95 0 0);
   --destructive: oklch(0.64 0.21 25.39);
@@ -198,7 +201,7 @@
     @apply text-foreground mt-12 mb-6 scroll-mt-23 text-4xl font-semibold tracking-tight;
   }
   h2 {
-    @apply text-foreground mt-16 mb-4 scroll-mt-23 text-2xl font-semibold;
+    @apply text-foreground mt-14 mb-5 scroll-mt-23 font-serif text-[1.75rem] leading-tight font-normal tracking-tight sm:text-3xl;
   }
   h3 {
     @apply text-foreground mb-4 scroll-mt-23 text-xl font-medium;
@@ -213,7 +216,9 @@
     @apply text-foreground mt-4 mb-2 scroll-mt-23 text-base font-medium;
   }
   p {
-    @apply text-muted-foreground mb-5 text-[1.08rem] leading-8;
+    @apply mb-6 text-[1.0625rem] leading-[1.75] sm:text-[1.125rem];
+    color: var(--reading);
+    text-wrap: pretty;
   }
   a {
     @apply text-primary font-medium no-underline transition-colors hover:underline;
@@ -222,19 +227,20 @@
     @apply font-semibold;
   }
   em {
-    @apply italic;
+    @apply text-foreground italic;
   }
   ul {
     @apply mb-4 list-inside list-disc space-y-2 pl-2;
   }
   li {
-    @apply text-muted-foreground;
+    color: var(--reading);
   }
   ol {
     @apply mb-6 list-decimal space-y-4 pl-6;
   }
   blockquote {
-    @apply border-muted-foreground/30 text-muted-foreground my-6 border-l-4 pl-4 italic;
+    @apply border-muted-foreground/30 my-6 border-l-4 pl-4 italic;
+    color: var(--reading);
   }
   code {
     @apply bg-muted rounded px-1.5 py-0.5 font-mono text-sm;
@@ -246,7 +252,7 @@
     @apply bg-transparent p-0 text-sm;
   }
   hr {
-    @apply border-border my-8;
+    @apply border-border my-14;
   }
   table {
     @apply my-6 w-full border-collapse;
