@@ -1,7 +1,7 @@
 // Site Configuration
 // Centralized configuration for site metadata, SEO, and branding
 
-export const SITE_TITLE = 'analogattention — Journals on Digital Minimalism'
+export const SITE_TITLE = 'analogattention'
 export const SITE_DESCRIPTION =
   'Analog Attention is about reinforcing the importance of your natural curiosity, and using your own spirit of inquiry to shape your day-to-day.'
 
@@ -10,15 +10,18 @@ export const SITE_DESCRIPTION =
 // because the site itself has nowhere to keep email addresses.
 export const SUBSTACK_URL = ''
 
-export const GITHUB_URL = 'https://github.com/yourusername/analogattention'
 export const SITE_URL = 'https://analogattention.com/'
+
+// An address that actually receives mail. Leave empty until one exists: the contact page then
+// tells readers to reply where they found the post, instead of showing a form that goes nowhere.
+export const CONTACT_EMAIL = ''
 
 export const SITE_METADATA = {
   title: {
-    default: 'analogattention — Journals on Digital Minimalism'
+    default: 'analogattention'
   },
   description:
-    'analogattention is a digital garden for thinking clearly. Journals and resources on digital minimalism, intentional technology use, and reclaiming attention.',
+    'A digital garden for thinking clearly. Essays on attention, curiosity, and living deliberately.',
   keywords: [
     'digital minimalism',
     'intentional technology',
@@ -40,8 +43,8 @@ export const SITE_METADATA = {
     index: true,
     follow: true
   },
-  language: 'en-US',
-  locale: 'en_US',
+  language: 'en-AU',
+  locale: 'en_AU',
   icons: {
     icon: [
       { url: '/favicon/favicon.ico', sizes: '48x48' },
@@ -55,9 +58,9 @@ export const SITE_METADATA = {
   },
   openGraph: {
     type: 'website',
-    locale: 'en_US',
+    locale: 'en_AU',
     siteName: 'analogattention',
-    title: 'analogattention — Journals on Digital Minimalism',
+    title: 'analogattention',
     description:
       'analogattention is a digital garden for thinking clearly. Journals and resources on digital minimalism, intentional technology use, and reclaiming attention.',
     images: [
@@ -65,16 +68,16 @@ export const SITE_METADATA = {
         url: '/images/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'analogattention — Journals on Digital Minimalism',
+        alt: 'analogattention',
         type: 'image/png'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@analogattention',
-    creator: '@analogattention',
-    title: 'analogattention — Journals on Digital Minimalism',
+    site: '',
+    creator: '',
+    title: 'analogattention',
     description:
       'analogattention is a digital garden for thinking clearly. Journals and resources on digital minimalism, intentional technology use, and reclaiming attention.',
     images: ['/images/og-image.png']
@@ -86,32 +89,10 @@ export const SITE_METADATA = {
   }
 }
 
-// Social media links
-export const SOCIAL_LINKS = {
-  github: GITHUB_URL,
-  twitter: 'https://twitter.com/analogattention',
-  linkedin: 'https://linkedin.com/company/analogattention',
-  discord: 'https://discord.gg/analogattention'
-}
-
 // Company information for structured data
 export const COMPANY_INFO = {
   name: 'analogattention',
-  legalName: 'analogattention',
   url: SITE_URL,
-  logo: `/images/site-logo.png`,
-  foundingDate: '2026',
-  address: {
-    streetAddress: '123 Web Dev Street',
-    addressLocality: 'San Francisco',
-    addressRegion: 'CA',
-    postalCode: '94102',
-    addressCountry: 'US'
-  },
-  contactPoint: {
-    telephone: '+1-000-000-0000',
-    contactType: 'customer support',
-    email: 'hello@analogattention.com'
-  },
-  sameAs: Object.values(SOCIAL_LINKS)
+  logo: `/favicon/android-chrome-512x512.png`,
+  sameAs: [] as string[]
 }

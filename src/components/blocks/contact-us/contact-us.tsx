@@ -1,26 +1,23 @@
-import { Card, CardContent } from '@/components/ui/card'
-
-import ContactForm from '@/components/blocks/contact-us/contact-form'
+import { CONTACT_EMAIL } from '@/consts'
 
 const ContactUs = () => {
   return (
-    <section className='bg-muted py-8 sm:py-16 lg:h-dvh lg:py-32'>
-      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
-        <div className='mb-12 space-y-4 text-center sm:mb-16'>
-          <h2 className='text-2xl font-semibold md:text-3xl lg:text-4xl'>Get in touch with us for more information</h2>
-          <p className='text-muted-foreground text-xl'>
-            Contact us for inquiries or support we&apos;re here to help and ensure an exceptional experience.
+    <section className='py-20 sm:py-24 lg:py-28'>
+      <div className='mx-auto max-w-3xl px-4 sm:px-6 lg:px-8'>
+        <h1 className='font-serif text-4xl font-light leading-[1.06] tracking-tight sm:text-5xl lg:text-6xl'>
+          Contact
+        </h1>
+        <div className='prose mt-10'>
+          <p>
+            If a post rang true, or didn&apos;t, I&apos;d like to hear about it. The easiest place to reply is
+            wherever you found the post; that&apos;s where the conversation is.
           </p>
+          {CONTACT_EMAIL && (
+            <p>
+              Otherwise, email <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+            </p>
+          )}
         </div>
-
-        <Card className='border-none shadow-none'>
-          <CardContent className='grid gap-6 md:grid-cols-4 md:gap-12'>
-            {/* Form Section */}
-            <div className='md:col-span-4'>
-              <ContactForm />
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </section>
   )

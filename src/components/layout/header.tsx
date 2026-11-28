@@ -1,13 +1,12 @@
 'use client'
 
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { MenuIcon } from 'lucide-react'
+import { MenuIcon, XIcon } from 'lucide-react'
 
 import ThemeToggle from '@/components/layout/theme-toggle'
 
 import { Button } from '@/components/ui/button'
 
-import MenuDropdown from '@/components/blocks/menu-dropdown'
 import MenuNavigation from '@/components/blocks/menu-navigation'
 import type { NavigationSection } from '@/components/blocks/menu-navigation'
 
@@ -23,6 +22,21 @@ const Header = ({ navigationData, isHome = false, className }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const [isHomeRoute, setIsHomeRoute] = useState(isHome)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [currentPath, setCurrentPath] = useState('')
+
+  useEffect(() => {
+    setCurrentPath(window.location.pathname)
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+  }, [menuOpen])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -126,19 +140,50 @@ const Header = ({ navigationData, isHome = false, className }: HeaderProps) => {
           <ThemeToggle />
 
           {/* Mobile menu */}
-          <MenuDropdown
-            align='end'
-            navigationData={navigationData}
-            activeSection={activeSection}
-            trigger={
-              <Button variant='outline' size='icon' className='lg:hidden'>
-                <MenuIcon />
-                <span className='sr-only'>Menu</span>
-              </Button>
-            }
-          />
+          <Button
+            variant='outline'
+            size='icon'
+            className='lg:hidden'
+            aria-expanded={menuOpen}
+            aria-controls='mobile-menu'
+            onClick={() => setMenuOpen(open => !open)}
+          >
+            {menuOpen ? <XIcon /> : <MenuIcon />}
+            <span className='sr-only'>{menuOpen ? 'Close menu' : 'Open menu'}</span>
+          </Button>
         </div>
       </div>
+
+      {menuOpen && (
+        <nav
+          id='mobile-menu'
+          className='absolute inset-x-0 top-full z-50 h-[calc(100dvh-4rem)] overflow-y-auto border-t border-border bg-background lg:hidden'
+        >
+          <ul className='mx-auto max-w-7xl px-4 py-6 sm:px-6'>
+            {navigationData
+              .filter(item => item.href)
+              .map(item => {
+                const href = item.href as string
+                const isCurrent = href === '/' ? currentPath === '/' : currentPath.startsWith(href)
+                return (
+                  <li key={item.title} className='border-b border-border/70'>
+                    <a
+                      href={href}
+                      onClick={() => setMenuOpen(false)}
+                      aria-current={isCurrent ? 'page' : undefined}
+                      className={cn(
+                        'block py-4 font-serif text-2xl tracking-tight transition-colors',
+                        isCurrent ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+                      )}
+                    >
+                      {item.title}
+                    </a>
+                  </li>
+                )
+              })}
+          </ul>
+        </nav>
+      )}
     </header>
   )
 }

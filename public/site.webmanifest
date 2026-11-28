@@ -1,17 +1,16 @@
 {
   "name": "analogattention",
   "short_name": "analogattention",
-  "description": "Essays and resources on digital minimalism, intentional technology use, and reclaiming attention.",
+  "description": "A digital garden for thinking clearly. Essays on attention, curiosity, and living deliberately.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#eaedf8",
-  "theme_color": "#111826",
+  "background_color": "#151515",
+  "theme_color": "#151515",
   "orientation": "portrait-primary",
   "categories": [
-    "productivity",
-    "business",
-    "development"
+    "lifestyle",
+    "education"
   ],
   "icons": [
     {

@@ -48,24 +48,27 @@ const formattedRelatedPosts = relatedPosts.map(post => ({
 
 const { previous: previousPost, next: nextPost } = getPostNavigation(allPosts, entry.id)
 const readTime = entry.data.readTime || calculateReadTime(entry.body)
+// Share preview: the post's own image if it has one, otherwise the generated card (scripts/make-og-images.mjs)
+const shareImage = entry.data.imageUrl || `/images/og/${entry.data.slug}.png`
+const publishedISO = new Date(entry.data.pubDate).toISOString()
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: entry.data.title,
   description: entry.data.description,
-  image: entry.data.imageUrl,
-  datePublished: entry.data.pubDate,
+  image: new URL(shareImage, Astro.site).toString(),
+  datePublished: publishedISO,
   author: { '@type': 'Person', name: entry.data.author }
 }
 ---
 
 <Layout
-  title={entry.data.title}
+  title={`${entry.data.title} — analogattention`}
   description={entry.data.description}
-  image={entry.data.imageUrl}
+  image={shareImage}
   type='article'
-  publishedTime={entry.data.pubDate}
+  publishedTime={publishedISO}
   author={entry.data.author}
   schema={schema}
 >
